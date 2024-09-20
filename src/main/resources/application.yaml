@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: wallet-service-assessment
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: wallet-service-assessment
+      username: root
+      password: secret
