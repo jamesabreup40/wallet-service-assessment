@@ -9,5 +9,5 @@ data class Transaction(
     val id: String = randomUUID().toString(),
     val walletId: String,
     val amount: BigDecimal,
-    val transactionType: TransactionType
+    val walletTransactionType: WalletTransactionType
 )

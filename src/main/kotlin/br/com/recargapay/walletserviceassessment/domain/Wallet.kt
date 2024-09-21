@@ -2,6 +2,8 @@ package br.com.recargapay.walletserviceassessment.domain
 
 import br.com.recargapay.walletserviceassessment.domain.exception.NegativeDepositAmountInWallet
 import br.com.recargapay.walletserviceassessment.domain.exception.NoBalanceAvailableInWallet
+import org.springframework.data.annotation.Id
+import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.mapping.Document
 import java.math.BigDecimal
 import java.math.BigDecimal.ZERO
@@ -9,15 +11,17 @@ import java.util.UUID.randomUUID
 
 @Document(collection = "wallets")
 class Wallet(
-    val id: String = randomUUID().toString(),
-    var balance: BigDecimal = ZERO
+    @Id val id: String = randomUUID().toString(),
+    var balance: BigDecimal = ZERO,
+    @Version
+    var version: Long? = null
 ) {
 
-    fun deposit(depositAmount: BigDecimal) =
-        if (depositAmount < ZERO) throw NegativeDepositAmountInWallet()
-            else balance.plus(depositAmount)
+    fun cashIn(depositAmount: BigDecimal) =
+        if (depositAmount <= ZERO) throw NegativeDepositAmountInWallet()
+        else balance = balance.add(depositAmount)
 
-    fun withdraw(withdrawAmount: BigDecimal) =
+    fun cashOut(withdrawAmount: BigDecimal) =
         if (balance < withdrawAmount) throw NoBalanceAvailableInWallet()
-            else balance.minus(withdrawAmount)
+        else balance = balance.subtract(withdrawAmount)
 }

@@ -14,8 +14,10 @@ class WalletResource(val handler: WalletHandler) {
         "/wallet".nest {
             accept(APPLICATION_JSON).nest {
                 POST("/create", handler::create)
-                POST("/{id}/transaction", handler::transaction)
+                POST("/{id}/funds", handler::funds)
+                POST("/{id}/funds/transfer", handler::transfer)
                 GET("/{id}/balance", handler::balance)
+                GET("/{id}/balance/history", handler::balance)
             }
         }
     }
